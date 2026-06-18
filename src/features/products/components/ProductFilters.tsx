@@ -85,7 +85,7 @@ export function ProductFilters() {
       </div>
 
       <div className="flex items-center gap-3">
-        {/* Chips — scroll horizontal independiente */}
+        {/* Chips — scroll horizontal independiente, sin el botón Más */}
         <div className="flex min-w-0 flex-1 items-center gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <button
             type="button"
@@ -107,34 +107,35 @@ export function ProductFilters() {
               {c.name}
             </button>
           ))}
-
-          {hidden.length > 0 && (
-            <div ref={moreRef} className="relative shrink-0">
-              <button
-                type="button"
-                onClick={() => setMoreOpen((o) => !o)}
-                className={`${chip(moreActive)} flex items-center gap-1`}
-              >
-                Más <Chevron />
-              </button>
-              {moreOpen && (
-                <div className="absolute left-0 top-full z-20 mt-1.5 min-w-[200px] rounded-2xl bg-surface p-1.5 shadow-[0_8px_28px_rgba(0,0,0,0.13)] ring-1 ring-black/5">
-                  {hidden.map((c) => (
-                    <button
-                      key={c.slug}
-                      type="button"
-                      onClick={() => { setCategory(c.slug); setMoreOpen(false); }}
-                      className="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left text-sm font-semibold hover:bg-black/5"
-                    >
-                      {c.name}
-                      {category === c.slug && <Check />}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
         </div>
+
+        {/* Más — fuera del scroll para que el dropdown no quede recortado */}
+        {hidden.length > 0 && (
+          <div ref={moreRef} className="relative shrink-0">
+            <button
+              type="button"
+              onClick={() => setMoreOpen((o) => !o)}
+              className={`${chip(moreActive)} flex items-center gap-1`}
+            >
+              Más <Chevron />
+            </button>
+            {moreOpen && (
+              <div className="absolute left-0 top-full z-20 mt-1.5 min-w-[200px] rounded-2xl bg-surface p-1.5 shadow-[0_8px_28px_rgba(0,0,0,0.13)] ring-1 ring-black/5">
+                {hidden.map((c) => (
+                  <button
+                    key={c.slug}
+                    type="button"
+                    onClick={() => { setCategory(c.slug); setMoreOpen(false); }}
+                    className="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left text-sm font-semibold hover:bg-black/5"
+                  >
+                    {c.name}
+                    {category === c.slug && <Check />}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Ordenar — siempre visible, no entra al scroll */}
         <div ref={sortRef} className="relative shrink-0">
