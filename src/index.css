@@ -1,1 +1,45 @@
 @import "tailwindcss";
+
+@theme {
+    --color-canvas: #efefee;
+    --color-surface: #ffffff;
+    --color-ink: #111111;
+    --color-subtle: #666666;
+    --color-muted: #999999;
+    --color-accent: #ff7110;
+    --color-accent-wash: #fff6f0;
+    --color-skeleton: #e8e8e8;
+
+    --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+
+    --radius-card: 16px;
+}
+
+body {
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Shimmer para los skeletons */
+@keyframes ic-shimmer {
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.ic-shimmer {
+    position: relative;
+    overflow: hidden;
+    background: var(--color-skeleton);
+}
+
+.ic-shimmer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+    animation: ic-shimmer 1.4s infinite;
+}
