@@ -4,6 +4,9 @@ import { useProductFilters } from "../hooks/useProductFilters";
 import { useInfiniteScroll } from "../../../lib/useInfiniteScroll";
 import { ProductFilters } from "./ProductFilters";
 import { ProductGrid } from "./ProductGrid";
+import { useCartStore } from "../../cart/store/cartStore";
+import { CartButton } from "../../cart/components/CartButton";
+import { useToast } from "../../../components/ui/toast/useToast";
 import type { Product } from "../types";
 
 export function CatalogPage() {
@@ -18,10 +21,17 @@ export function CatalogPage() {
     isFetchingNextPage,
   } = useInfiniteProducts({ q, category });
 
-  // Estable -> hace efectivo el React.memo de ProductCard.
-  const handleAddToCart = useCallback((product: Product) => {
-    console.log("add to cart", product.id); // Fase 6: conectar al carrito
-  }, []);
+  // dentro del componente:
+  const addItem = useCartStore((s) => s.addItem);
+  const toast = useToast();
+
+  const handleAddToCart = useCallback(
+    (product: Product) => {
+      addItem(product);
+      toast(`${product.title} agregado al carrito`);
+    },
+    [addItem, toast], // ambos estables -> el callback sigue estable
+  );
 
   const sentinelRef = useInfiniteScroll({
     hasNextPage,
@@ -44,12 +54,7 @@ export function CatalogPage() {
               InterCommerce
             </span>
           </div>
-          <button
-            type="button"
-            className="rounded-full bg-canvas px-4 py-2 text-sm font-semibold ring-1 ring-black/5"
-          >
-            Carrito
-          </button>
+          <CartButton />
         </div>
       </header>
 

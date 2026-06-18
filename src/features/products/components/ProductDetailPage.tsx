@@ -5,19 +5,22 @@ import { ApiError } from "../../../api/client";
 import { formatCents } from "../../../lib/money";
 import { sanitizeHtml } from "../../../lib/sanitize";
 import { useToast } from "../../../components/ui/toast/useToast";
+import { useCartStore } from "../../cart/store/cartStore";
+import { CartButton } from "../../cart/components/CartButton";
 import { ProductGallery } from "./ProductGallery";
 
 function DetailShell({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen">
       <header className="sticky top-0 z-20 border-b border-black/5 bg-surface/80 backdrop-blur-md">
-        <div className="mx-auto flex max-w-6xl items-center px-5 py-3">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3">
           <Link
             to="/"
             className="text-sm font-semibold text-subtle hover:text-ink"
           >
             ← Volver al catálogo
           </Link>
+          <CartButton />
         </div>
       </header>
       <main className="mx-auto max-w-6xl px-5 py-8">{children}</main>
@@ -49,6 +52,7 @@ export function ProductDetailPage() {
   const invalidId = !Number.isFinite(productId) || productId <= 0;
 
   const { data: product, isLoading, isError, error } = useProduct(productId);
+  const addItem = useCartStore((s) => s.addItem);
   const toast = useToast();
 
   if (isLoading) return <DetailSkeleton />;
@@ -79,7 +83,7 @@ export function ProductDetailPage() {
   }
 
   const handleAdd = () => {
-    // Fase 6: cartStore.addItem(product)
+    addItem(product);
     toast(`${product.title} agregado al carrito`);
   };
 

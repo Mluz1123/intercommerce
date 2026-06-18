@@ -7,11 +7,13 @@ import { queryClient } from "./lib/queryClient";
 import { router } from "./routes/router";
 import { Toaster } from "./components/ui/toast/Toaster";
 import "./index.css";
+import { CartDrawer } from "./features/cart/components/CartDrawer";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
+      <CartDrawer />
       <Toaster />
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
