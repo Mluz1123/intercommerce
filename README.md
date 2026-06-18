@@ -2,8 +2,8 @@
 
 SPA de e-commerce que consume la API pública de [DummyJSON](https://dummyjson.com). Catálogo con filtros sincronizados a la URL, infinite scroll, detalle de producto y carrito persistente.
 
-- **Demo en vivo:** _https://intercommerce.vercel.app_ <!-- reemplazar con tu URL -->
-- **Repositorio:** _https://github.com/usuario/intercommerce_ <!-- reemplazar -->
+- **Demo en vivo:** _https://intercommerce-chi.vercel.app/_
+- **Repositorio:** _https://github.com/Mluz1123/intercommerce_
 
 ---
 
