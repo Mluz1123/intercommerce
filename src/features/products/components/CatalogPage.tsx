@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import { useInfiniteProducts } from "../hooks/useInfiniteProducts";
-import { useCategories } from "../hooks/useCategories";
+import { useProductFilters } from "../hooks/useProductFilters";
+import { ProductFilters } from "./ProductFilters";
 
 export function CatalogPage() {
+  const { q, category } = useProductFilters();
   const {
     data,
     isLoading,
@@ -11,18 +13,21 @@ export function CatalogPage() {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useInfiniteProducts({});
-  const categories = useCategories();
-
-  if (isLoading) return <p style={{ padding: 24 }}>Cargando productos…</p>;
-  if (isError) return <p style={{ padding: 24 }}>Error: {error.message}</p>;
+  } = useInfiniteProducts({ q, category });
 
   const products = data?.pages.flatMap((page) => page.items) ?? [];
 
   return (
     <div style={{ padding: 24 }}>
-      <h1>InterCommerce ({products.length} productos)</h1>
-      <p>Categorías cargadas: {categories.data?.length ?? 0}</p>
+      <h1>InterCommerce</h1>
+      <ProductFilters />
+
+      {isLoading && <p>Cargando productos…</p>}
+      {isError && <p>Error: {error.message}</p>}
+      {!isLoading && !isError && products.length === 0 && (
+        <p>No se encontraron productos.</p>
+      )}
+
       <ul>
         {products.map((p) => (
           <li key={p.id}>
@@ -31,6 +36,7 @@ export function CatalogPage() {
           </li>
         ))}
       </ul>
+
       {hasNextPage && (
         <button onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
           {isFetchingNextPage ? "Cargando…" : "Cargar más"}
