@@ -1,13 +1,14 @@
 const BASE_URL = "https://dummyjson.com";
 
 export class ApiError extends Error {
-  constructor(
-    public readonly status: number,
-    message: string,
-    public readonly url: string,
-  ) {
+  readonly status: number;
+  readonly url: string;
+
+  constructor(status: number, message: string, url: string) {
     super(message);
     this.name = "ApiError";
+    this.status = status;
+    this.url = url;
   }
 }
 
