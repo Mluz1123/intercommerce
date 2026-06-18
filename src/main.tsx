@@ -8,14 +8,17 @@ import { router } from "./routes/router";
 import { Toaster } from "./components/ui/toast/Toaster";
 import "./index.css";
 import { CartDrawer } from "./features/cart/components/CartDrawer";
+import { ErrorBoundary } from "./components/ui/ErrorBoundary";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-      <CartDrawer />
-      <Toaster />
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+        <CartDrawer />
+        <Toaster />
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </ErrorBoundary>
   </StrictMode>,
 );
