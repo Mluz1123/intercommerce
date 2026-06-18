@@ -10,15 +10,15 @@ interface ProductCardProps {
 
 function ProductCardBase({ product, onAddToCart }: ProductCardProps) {
   return (
-    <article className="group relative flex flex-col overflow-hidden rounded-card bg-surface shadow-[0_1px_4px_rgba(0,0,0,0.06)] ring-1 ring-black/5 transition-shadow duration-200 hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)]">
+    <article className="group relative flex flex-col overflow-hidden rounded-2xl bg-surface shadow-[0_2px_10px_rgba(0,0,0,.06)] transition-[transform,box-shadow] duration-[250ms] ease-out hover:-translate-y-[3px] hover:shadow-[0_8px_28px_rgba(0,0,0,.13)]">
       <div className="relative">
         <Link to={`/product/${product.id}`} className="block">
-          <div className="aspect-square overflow-hidden bg-skeleton">
+          <div className="relative aspect-[4/5] overflow-hidden bg-skeleton">
             <img
               src={product.thumbnail}
               alt={product.title}
               loading="lazy"
-              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+              className="h-full w-full object-cover transition-transform duration-[600ms] ease-[cubic-bezier(0.2,0.7,0.15,1)] group-hover:scale-[1.055]"
             />
           </div>
         </Link>
@@ -52,9 +52,17 @@ function ProductCardBase({ product, onAddToCart }: ProductCardProps) {
         >
           {product.title}
         </Link>
-        <span className="mt-auto pt-2 text-base font-bold tracking-tight">
-          {formatCents(product.priceCents)}
-        </span>
+        <div className="mt-auto flex items-center justify-between pt-2">
+          <span className="text-base font-bold tracking-tight">
+            {formatCents(product.priceCents)}
+          </span>
+          <span className="flex items-center gap-1 text-sm font-semibold text-ink">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" className="text-accent">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+            </svg>
+            {product.rating.toFixed(1)}
+          </span>
+        </div>
       </div>
     </article>
   );

@@ -21,13 +21,13 @@ function renderCatalog() {
   );
 }
 
-describe("Flujo: agregar al carrito", () => {
+describe("Flow: add to cart", () => {
   beforeEach(() => {
     useCartStore.setState({ items: [], isOpen: false });
     localStorage.clear();
   });
 
-  it("agrega un producto y actualiza el total del carrito", async () => {
+  it("adds a product and updates the cart total", async () => {
     const user = userEvent.setup();
     renderCatalog();
 

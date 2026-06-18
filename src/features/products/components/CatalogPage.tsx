@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { useInfiniteProducts } from "../hooks/useInfiniteProducts";
 import { useProductFilters } from "../hooks/useProductFilters";
 import { useInfiniteScroll } from "../../../lib/useInfiniteScroll";
@@ -10,7 +10,7 @@ import { useToast } from "../../../components/ui/toast/useToast";
 import type { Product } from "../types";
 
 export function CatalogPage() {
-  const { q, category } = useProductFilters();
+  const { q, category, sort } = useProductFilters();
   const {
     data,
     isLoading,
@@ -28,7 +28,7 @@ export function CatalogPage() {
   const handleAddToCart = useCallback(
     (product: Product) => {
       addItem(product);
-      toast(`${product.title} agregado al carrito`);
+      toast("Agregado al carrito");
     },
     [addItem, toast], // ambos estables -> el callback sigue estable
   );
@@ -39,7 +39,13 @@ export function CatalogPage() {
     onLoadMore: fetchNextPage,
   });
 
-  const products = data?.pages.flatMap((page) => page.items) ?? [];
+  const products = useMemo(() => {
+    const all = data?.pages.flatMap((page) => page.items) ?? [];
+    if (sort === "price-asc") return [...all].sort((a, b) => a.priceCents - b.priceCents);
+    if (sort === "price-desc") return [...all].sort((a, b) => b.priceCents - a.priceCents);
+    if (sort === "rating") return [...all].sort((a, b) => b.rating - a.rating);
+    return all;
+  }, [data, sort]);
   const isEmpty = !isLoading && !isError && products.length === 0;
 
   return (

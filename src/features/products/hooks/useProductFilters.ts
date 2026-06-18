@@ -1,11 +1,15 @@
 import { useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 
+export type SortOption = "featured" | "price-asc" | "price-desc" | "rating";
+
 export interface UseProductFilters {
   q: string;
   category: string;
+  sort: SortOption;
   setQuery: (q: string) => void;
   setCategory: (category: string) => void;
+  setSort: (sort: SortOption) => void;
   reset: () => void;
 }
 
@@ -14,6 +18,7 @@ export function useProductFilters(): UseProductFilters {
 
   const q = searchParams.get("q") ?? "";
   const category = searchParams.get("category") ?? "";
+  const sort = (searchParams.get("sort") as SortOption) || "featured";
 
   const update = useCallback(
     (mutate: (params: URLSearchParams) => void) => {
@@ -50,15 +55,26 @@ export function useProductFilters(): UseProductFilters {
     [update],
   );
 
+  const setSort = useCallback(
+    (value: SortOption) => {
+      update((p) => {
+        if (value && value !== "featured") p.set("sort", value);
+        else p.delete("sort");
+      });
+    },
+    [update],
+  );
+
   const reset = useCallback(() => {
     update((p) => {
       p.delete("q");
       p.delete("category");
+      p.delete("sort");
     });
   }, [update]);
 
   return useMemo(
-    () => ({ q, category, setQuery, setCategory, reset }),
-    [q, category, setQuery, setCategory, reset],
+    () => ({ q, category, sort, setQuery, setCategory, setSort, reset }),
+    [q, category, sort, setQuery, setCategory, setSort, reset],
   );
 }

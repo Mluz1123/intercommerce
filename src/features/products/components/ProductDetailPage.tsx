@@ -84,7 +84,7 @@ export function ProductDetailPage() {
 
   const handleAdd = () => {
     addItem(product);
-    toast(`${product.title} agregado al carrito`);
+    toast("Agregado al carrito");
   };
 
   return (
